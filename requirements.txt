@@ -1,0 +1,19 @@
+# Servidor
+fastapi>=0.110          # MIT
+uvicorn[standard]>=0.29 # BSD-3
+python-multipart>=0.0.9 # Apache-2.0
+cryptography>=42        # Apache-2.0 / BSD (certificado HTTPS local)
+qrcode[pil]>=7.4        # BSD (QR en la terminal)
+
+# Reconstrucción
+numpy>=1.26             # BSD-3
+scipy>=1.11             # BSD-3
+opencv-contrib-python-headless>=4.8  # Apache-2.0
+open3d>=0.18            # MIT
+trimesh>=4.0            # MIT
+pillow>=10              # HPND (MIT-like)
+pycolmap>=3.10          # BSD-3 (opcional: si no está, se usa el motor OpenCV)
+
+# Pruebas
+pytest>=8
+httpx>=0.27

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0f1115">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>Scanner3D</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+  { "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  } }
+  </script>
+</head>
+<body>
+  <header class="top">
+    <h1>Scanner<span>3D</span></h1>
+    <span id="conn" class="chip">…</span>
+  </header>
+
+  <main>
+    <!-- CAPTURA -->
+    <section id="tab-capture" class="tab active">
+      <div class="cam">
+        <video id="video" playsinline muted autoplay></video>
+        <svg id="ring" viewBox="-50 -50 100 100" aria-hidden="true"></svg>
+        <div id="heading" class="heading">—</div>
+        <div id="flash"></div>
+        <div id="cam-msg" class="cam-msg">Toca «Activar cámara»</div>
+      </div>
+      <div class="controls">
+        <div class="seg" role="tablist" aria-label="Modo de disparo">
+          <button data-mode="manual" class="on">Manual</button>
+          <button data-mode="compass">Brújula</button>
+          <button data-mode="timer">Temporizador</button>
+        </div>
+        <div id="timer-opts" class="row hidden">
+          <label>Cada <select id="interval">
+            <option value="1000">1 s</option><option value="2000" selected>2 s</option>
+            <option value="3000">3 s</option><option value="5000">5 s</option></select></label>
+          <span class="hint">Para plato giratorio</span>
+        </div>
+        <p id="mode-hint" class="hint">Rodea el objeto y toma una foto cada ~10°. Mantén el objeto centrado.</p>
+        <div class="row">
+          <button id="btn-cam" class="btn">Activar cámara</button>
+          <button id="btn-shot" class="shutter" aria-label="Tomar foto" disabled></button>
+          <button id="btn-auto" class="btn" disabled>Iniciar</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GALERÍA -->
+    <section id="tab-upload" class="tab">
+      <label class="drop">
+        <input id="file" type="file" accept="image/*" multiple>
+        <strong>Elegir fotos de la galería</strong>
+        <span>20–60 fotos alrededor del objeto, con buena luz y solape entre ellas</span>
+      </label>
+    </section>
+
+    <!-- TRABAJOS -->
+    <section id="tab-jobs" class="tab">
+      <div id="jobs" class="list"></div>
+    </section>
+
+    <!-- BANDEJA DEL ESCANEO ACTUAL -->
+    <section id="tray" class="tray">
+      <div class="tray-head">
+        <strong><span id="count">0</span> fotos</strong>
+        <button id="btn-clear" class="link">Vaciar</button>
+      </div>
+      <div id="thumbs" class="thumbs"></div>
+      <details>
+        <summary>Opciones</summary>
+        <div class="opts">
+          <label>Nombre <input id="opt-name" maxlength="80" placeholder="Mi objeto"></label>
+          <label>Calidad <select id="opt-quality">
+            <option value="fast">Rápida</option><option value="normal" selected>Normal</option><option value="high">Alta</option></select></label>
+          <label>Motor <select id="opt-engine">
+            <option value="auto" selected>Automático</option><option value="colmap">COLMAP</option><option value="opencv">OpenCV</option></select></label>
+        </div>
+      </details>
+      <button id="btn-send" class="btn primary wide" disabled>Enviar y reconstruir</button>
+      <div id="upload-bar" class="bar hidden"><i></i></div>
+    </section>
+  </main>
+
+  <!-- DETALLE / VISOR -->
+  <section id="detail" class="sheet hidden" aria-modal="true" role="dialog">
+    <header class="top">
+      <button id="btn-back" class="link">‹ Volver</button>
+      <h2 id="d-name"></h2>
+    </header>
+    <div id="viewer" class="viewer"><div id="viewer-msg" class="cam-msg"></div></div>
+    <div class="detail-body">
+      <div class="bar"><i id="d-bar"></i></div>
+      <p id="d-msg" class="hint"></p>
+      <div id="d-stats" class="stats"></div>
+      <div id="d-files" class="row wrap"></div>
+      <div class="row">
+        <button id="btn-cancel" class="btn">Cancelar</button>
+        <button id="btn-retry" class="btn">Reintentar</button>
+        <button id="btn-delete" class="btn danger">Borrar</button>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabs">
+    <button data-tab="capture" class="on">📷<span>Capturar</span></button>
+    <button data-tab="upload">🖼️<span>Galería</span></button>
+    <button data-tab="jobs">🧊<span>Modelos</span></button>
+  </nav>
+
+  <div id="toast" class="toast"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
